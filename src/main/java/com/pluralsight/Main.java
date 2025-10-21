@@ -20,6 +20,23 @@ public class Main {
         for(Room r : rooms){
             System.out.println(r);
         }
+        r101.checkIn();
+        r102.checkIn();
+
+
+        System.out.println();
+
+        for(Room r : rooms){
+            System.out.println(r);
+        }
+
+        r102.checkOut();
+
+        System.out.println();
+
+        for(Room r : rooms){
+            System.out.println(r);
+        }
 
     }
 }

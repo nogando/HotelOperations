@@ -29,6 +29,7 @@ public class Room {
     public double getPrice() {
         return price;
     }
+
     public  boolean isAvailable() {
 //        if (isOccupied || isDirty) {
 //            return false;
@@ -37,6 +38,29 @@ public class Room {
         return !(isOccupied && isDirty);
 
     }
+
+
+
+
+    public void checkIn(){
+        if (isAvailable()){
+            this.isOccupied = true;
+            this.isDirty = true;
+        }
+    }
+    public void checkOut(){
+        this.isOccupied = false;
+    }
+    public void cleanRoom(){
+        this.isDirty = false;
+    }
+
+
+
+
+
+
+
 
     @Override
     public String toString() {
