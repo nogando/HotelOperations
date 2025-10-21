@@ -1,13 +1,17 @@
 package com.pluralsight;
 
+import java.time.LocalTime;
+
 public class Employee {
+
+    //employeeId, name, department, payRate, hoursWorked.
     private int employeeId;
     private String name;
     private String department;
-    private float payRate;
-    private int hoursWorked;
+    private double payRate;
+    private float hoursWorked;
 
-    public Employee(int employeeId, String name, String department, float payRate, int hoursWorked) {
+    public Employee(int employeeId, String name, String department, double payRate, float hoursWorked) {
         this.employeeId = employeeId;
         this.name = name;
         this.department = department;
@@ -19,66 +23,80 @@ public class Employee {
         return employeeId;
     }
 
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDepartment() {
         return department;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public float getPayRate() {
+    public double getPayRate() {
         return payRate;
     }
 
-    public void setPayRate(float payRate) {
-        this.payRate = payRate;
-    }
-
-    public int getHoursWorked() {
+    public float getHoursWorked() {
         return hoursWorked;
     }
 
-    public void setHoursWorked(int hoursWorked) {
-        this.hoursWorked = hoursWorked;
+    public double getTotalPay(){
+        return (getRegularHours() * payRate) + (getOvertimeHours() * 1.5 * payRate );
     }
 
-    public int getRegularHours(){
+    public float getRegularHours(){
         return (hoursWorked > 40) ? 40 : hoursWorked;
     }
 
-    public int getOvertimeHours(){
+    public float getOvertimeHours(){
         return (hoursWorked > 40) ? hoursWorked - 40 : 0;
     }
 
-    public double getTotalPay(){
-        return (getOvertimeHours() * payRate * 1.5) + getRegularHours() * payRate;
+    private double punchInTime = 0;
+
+    public void punchIn(double time){
+        this.punchInTime = time;
+    }
+
+    public void punchIn(){
+//        LocalTime lt = LocalTime.now();
+//        int hours = lt.getHour();
+//        int minutes = lt.getMinute();
+//        double timeAsDouble = hours + ((double) minutes / 60);
+//
+//        this.punchInTime = timeAsDouble;
+
+        LocalTime lt = LocalTime.now();
+        this.punchInTime   = lt.getHour() + ((double) lt.getMinute() / 60);
+
+
 
     }
 
-    public double punchIn(double time){
-        return time;
+    public void punchOut(double time){
+        //double elapsedTime = time - this.punchInTime;
+        //this.hoursWorked += (float) elapsedTime;
+
+        this.hoursWorked += (float) (time - this.punchInTime);
+
     }
 
-    public double punchOut(double time){
-        double endTime = time;
-        double hoursWorkedToday = punchIn(time) - endTime;
-        return hoursWorkedToday += hoursWorked;
+    public void punchOut(){
+//        LocalTime lt = LocalTime.now();
+//        double punchOutAsDouble =  lt.getHour() + ((double) lt.getMinute() / 60);
+//        this.hoursWorked += (float) (punchOutAsDouble - this.punchInTime);
+//
+        LocalTime lt = LocalTime.now();
+        this.hoursWorked += (float) ( lt.getHour() + ((double) lt.getMinute() / 60) - this.punchInTime);
+
     }
 
+    public void punchTimeCard(double checkInTime, double checkOutTime){
+        this.hoursWorked += (float) (checkOutTime - checkInTime);
+    }
 
+    public void logHours(float hours){
+        this.hoursWorked += hours;
+    }
 
 
     @Override
@@ -89,10 +107,9 @@ public class Employee {
                 ", department='" + department + '\'' +
                 ", payRate=" + payRate +
                 ", hoursWorked=" + hoursWorked +
-                ", totalPay=" + getTotalPay() +
-                ", getRegularHours=" + getRegularHours() +
-                " getOvertimeHours=" + getOvertimeHours() +
-                "}";
-
+                ", getTotalPay()=" + getTotalPay() +
+                ". getRegularHours()=" + getRegularHours() +
+                ", getOvertimeHours()=" + getOvertimeHours() +
+                '}';
     }
 }
